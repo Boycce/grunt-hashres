@@ -16,7 +16,7 @@ module.exports = function(grunt) {
       all: [
         'Gruntfile.js',
         'tasks/*.js',
-        '<%= vows.all.files %>',
+        '<%= vows.all.src %>',
       ],
       options: {
         jshintrc: '.jshintrc',
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 
     vows: {
       all: {
-        files: 'test/*.spec.js'
+        src: 'test/*.spec.js'
       }
     }
 
