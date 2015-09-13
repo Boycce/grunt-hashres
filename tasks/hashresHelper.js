@@ -89,14 +89,26 @@ exports.hashAndSub = function(grunt, options) {
       grunt.file.expand(f.dest).forEach(function(f) {
         var destContents = fs.readFileSync(f, encoding);
         files.forEach(function(value) {
+          value[0] = value[0].replace(/\\/g, '/');
+          value[1] = value[1].replace(/\\/g, '/');
           grunt.log.debug('Substituting ' + value[0] + ' by ' + value[1]);
-          destContents = destContents.replace(new RegExp(utils.preg_quote(value[0])+"(\\?[0-9a-z]+)?", "g"), value[1]);
+
+          //console.log("\n " + value[0]);
+          //console.log(" " + utils.preg_quote(value[0])+"(\\?[0-9a-z]+)?");
+          //console.log(" new " + value[1]);
+
+          destContents = destContents.replace(new RegExp(
+            utils.preg_quote(value[0])+"(\\?[0-9a-z]+)?", "g"), 
+            value[1]
+          );
 
           grunt.log.debug('Substituting ' + nameToNameSearch[value[0]] + ' by ' + value[1]);
-          destContents = destContents.replace(
-                new RegExp(nameToNameSearch[value[0]], "g"),
-                value[1]
-            );
+
+          //var nameToSearch = nameToNameSearch[value[0]].replace(/([^\\])\.(?![^.]*$)/g, "$1\\.");
+          //destContents = destContents.replace(
+                //new RegExp(nameToSearch, "g"),
+                //value[1]
+            //);
         });
         grunt.log.debug('Saving the updated contents of the outination file');
         fs.writeFileSync(f, destContents, encoding);
